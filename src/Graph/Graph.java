@@ -14,9 +14,9 @@ public class Graph {
     public int upperBound;
     int edgeCardinality;
     private boolean[] isActive;
-    ArrayList<LinkedList<Edge>> incidency;
-    ArrayList<LinkedList<Arc>> inIncidency;
-    ArrayList<LinkedList<Arc>> outIncidency;
+    public ArrayList<LinkedList<Edge>> incidency;
+    public ArrayList<LinkedList<Arc>> inIncidency;
+    public ArrayList<LinkedList<Arc>> outIncidency;
 
     public Graph(int upperBound) {
         // Au début, upperBound==order
@@ -112,6 +112,8 @@ public class Graph {
             incidency.get(edge.dest).add(edge);
             incidency.get(edge.source).add(edge);
             edgeCardinality++;
+            addArc(new Arc(edge, false));
+            addArc(new Arc(edge, true));
         }
     }
 
