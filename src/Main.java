@@ -1,7 +1,8 @@
 import Graph.*;
 import GraphClasses.*;
-import RandomTreeAlgos.BreadthFirstSearch;
+import RandomTreeAlgos.*;
 import Graphics.*;
+import RandomTreeAlgos.RandomAldousBroder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,8 +55,8 @@ public class Main {
 
         // Non-random BFS
         ArrayList<Arc> randomArcTree =
-                BreadthFirstSearch.generateTree(graph, 0);
-
+            BreadthFirstSearch.generateTree(graph, 0);
+        //randomTree = RandomWilson.generateTree(graph);
         randomTree = new ArrayList<>();
         for (Arc a : randomArcTree) randomTree.add(a.support);
         return randomTree;
@@ -121,8 +122,8 @@ public class Main {
         final Labyrinth laby = new Labyrinth(grid, rooted);
 
         laby.setStyleBalanced();
-//		laby.setShapeBigNodes();
-//		laby.setShapeSmallAndFull();
+		laby.setShapeBigNodes();
+     	laby.setShapeSmallAndFull();
         laby.setShapeSmoothSmallNodes();
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
