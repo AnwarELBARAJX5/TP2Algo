@@ -54,11 +54,11 @@ public class Main {
         // ou bien parametriser à l'aide de la ligne de commande
 
         // Non-random BFS
-        ArrayList<Arc> randomArcTree =
-            BreadthFirstSearch.generateTree(graph, 0);
-        //randomTree = RandomWilson.generateTree(graph);
-        randomTree = new ArrayList<>();
-        for (Arc a : randomArcTree) randomTree.add(a.support);
+       // ArrayList<Arc> randomArcTree =
+        //    BreadthFirstSearch.generateTree(graph, 0);
+        randomTree = RandomAldousBroder.generateTree(graph);
+        //randomTree = new ArrayList<>();
+        //for (Arc a : randomArcTree) randomTree.add(a.support);
         return randomTree;
     }
 
