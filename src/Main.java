@@ -19,7 +19,7 @@ public class Main {
     static Grid grid = null;
 
 
-    public static void main(String argv[]) throws InterruptedException {
+    /*public static void main(String argv[]) throws InterruptedException {
 
         Graph graph = chooseFromGraphFamily();
         ArrayList<Edge> randomTree = null;
@@ -33,8 +33,36 @@ public class Main {
         stats.print();
 
         if (grid != null) showGrid(grid, randomTree);
-    }
+    }*/
+    public static void main(String argv[]) throws InterruptedException {
 
+        // CHOIX DU GRAPHE : "grid", "complete", "erdos", "lollipop"
+        String graphType = "grid";
+
+        // CHOIX DE L'ALGORITHME : "kruskal", "wilson", "aldous", "edgeInsertion", "randomBFS"
+        String algoType = "kruskal";
+        Graph graph = chooseFromGraphFamily(graphType);
+        ArrayList<Edge> randomTree = null;
+        int noOfSamples = 10;
+        System.out.println("Calcul des statistiques pour l'algorithme : " + algoType);
+        System.out.println("Sur le graphe : " + graphType + " (ordre " + graph.order + ")");
+        Stats stats = new Stats(noOfSamples);
+        for (int i = 0; i < noOfSamples; i++) {
+            if (!graphType.equals("grid")) {
+                graph = chooseFromGraphFamily(graphType);
+            }
+
+            randomTree = genTree(graph, algoType);
+            stats.update(randomTree);
+        }
+        stats.print();
+
+        // Affichage graphique (seulement si c'est une grille)
+        if (grid != null && graphType.equals("grid")) {
+            showGrid(grid, randomTree);
+        }
+    }
+/*
     private static Graph chooseFromGraphFamily() {
         // Parametriser ici cette fonction afin de pouvoir choisir
         // quelle classe de graphe utiliser
@@ -45,20 +73,72 @@ public class Main {
         //Graph graph = new ErdosRenyi(1_000, 100).graph;
         //Graph graph = new Lollipop(1_000).graph;
         return graph;
+    }*/
+    private static Graph chooseFromGraphFamily(String type) {
+        Graph graph = null;
+
+        switch (type) {
+            case "grid":
+                grid = new Grid(1920 / 11, 1080 / 11);
+                graph = grid.graph;
+                break;
+
+            case "complete":
+
+                graph = new Complete(400).graph;
+                break;
+
+            case "erdos":
+                graph = new ErdosRenyi(1000, 100).graph;
+                break;
+
+            case "lollipop":
+                // Lollipop : 1000 sommets
+                graph = new Lollipop(1_000).graph;
+                break;
+
+            default:
+                System.err.println("Type de graphe inconnu. Utilisation de la grille par défaut.");
+                grid = new Grid(1920 / 11, 1080 / 11);
+                graph = grid.graph;
+                break;
+        }
+        return graph;
     }
+    public static ArrayList<Edge> genTree(Graph graph, String algo) {
+        ArrayList<Edge> randomTree = new ArrayList<>();
 
-    public static ArrayList<Edge> genTree(Graph graph) {
-        ArrayList<Edge> randomTree;
+        switch (algo) {
+            case "kruskal":
+                randomTree = RandomKruskal.generateTree(graph);
+                break;
 
-        // TOOO : modifier l'algorithme utilisé ici
-        // ou bien parametriser à l'aide de la ligne de commande
+            case "wilson":
+                randomTree = RandomWilson.generateTree(graph);
+                break;
 
-        // Non-random BFS
-       // ArrayList<Arc> randomArcTree =
-        //    BreadthFirstSearch.generateTree(graph, 0);
-        randomTree = RandomAldousBroder.generateTree(graph);
-        //randomTree = new ArrayList<>();
-        //for (Arc a : randomArcTree) randomTree.add(a.support);
+            case "aldous":
+                randomTree = RandomAldousBroder.generateTree(graph);
+                break;
+
+            case "edgeInsertion":
+                randomTree = RandomEdgeInsertion.generateTree(graph);
+                break;
+
+            case "randomBFS":
+
+                ArrayList<Arc> randomArcTree = BreadthFirstSearch.generateTree(graph, 0);
+                for (Arc a : randomArcTree) {
+                    randomTree.add(a.support);
+                }
+                break;
+
+            default:
+                System.err.println("Algorithme inconnu. Utilisation de Kruskal par défaut.");
+                randomTree = RandomKruskal.generateTree(graph);
+                break;
+        }
+
         return randomTree;
     }
 
@@ -73,8 +153,8 @@ public class Main {
         long startingTime = 0;
 
         public Stats(int noOfSamples) {
-            int nbrOfSamples = noOfSamples;
-            long startingTime = System.nanoTime();
+            this.nbrOfSamples = noOfSamples;
+            this.startingTime = System.nanoTime();
         }
 
         public void print() {
