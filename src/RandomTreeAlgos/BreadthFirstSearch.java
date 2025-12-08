@@ -12,9 +12,11 @@ public class BreadthFirstSearch {
 	Queue<Arc> frontier;
 	ArrayList<Arc> tree;
 	BitSet reached;
-	
+
 	private void push(int vertex) {
-		for (Arc arc : graph.outEdges(vertex)) frontier.offer(arc);
+		List<Arc> neighbors = Arrays.asList(graph.outEdges(vertex));
+		Collections.shuffle(neighbors);
+		for (Arc arc : neighbors) frontier.offer(arc);
 	}
 	
 	private void explore(Arc nextArc) {

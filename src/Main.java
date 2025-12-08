@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import java.util.Scanner;
 
 
 public class Main {
@@ -35,12 +36,19 @@ public class Main {
         if (grid != null) showGrid(grid, randomTree);
     }*/
     public static void main(String argv[]) throws InterruptedException {
-
-        // CHOIX DU GRAPHE : "grid", "complete", "erdos", "lollipop"
-        String graphType = "grid";
-
-        // CHOIX DE L'ALGORITHME : "kruskal", "wilson", "aldous", "edgeInsertion", "randomBFS"
-        String algoType = "kruskal";
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Choisissez le type de graphe (grid, complete, erdos, lollipop) :");
+        String graphType = scanner.nextLine().trim().toLowerCase();
+        if (graphType.isEmpty()) {
+            System.out.println("Aucun choix, utilisation de 'grid' par défaut.");
+            graphType = "grid";
+        }
+        System.out.println("Choisissez l'algorithme (kruskal, wilson, aldous, edgeInsertion, randomBFS) :");
+        String algoType = scanner.nextLine().trim();
+        if (algoType.isEmpty()) {
+            System.out.println("Aucun choix, utilisation de 'kruskal' par défaut.");
+            algoType = "kruskal";
+        }
         Graph graph = chooseFromGraphFamily(graphType);
         ArrayList<Edge> randomTree = null;
         int noOfSamples = 10;
@@ -57,10 +65,10 @@ public class Main {
         }
         stats.print();
 
-        // Affichage graphique (seulement si c'est une grille)
         if (grid != null && graphType.equals("grid")) {
             showGrid(grid, randomTree);
         }
+        scanner.close();
     }
 /*
     private static Graph chooseFromGraphFamily() {
@@ -93,8 +101,7 @@ public class Main {
                 break;
 
             case "lollipop":
-                // Lollipop : 1000 sommets
-                graph = new Lollipop(1_000).graph;
+                graph = new Lollipop(1000).graph;
                 break;
 
             default:
@@ -125,7 +132,7 @@ public class Main {
                 randomTree = RandomEdgeInsertion.generateTree(graph);
                 break;
 
-            case "randomBFS":
+            case "bfs":
 
                 ArrayList<Arc> randomArcTree = BreadthFirstSearch.generateTree(graph, 0);
                 for (Arc a : randomArcTree) {
@@ -178,7 +185,7 @@ public class Main {
 
         public void update(ArrayList<Edge> randomTree) {
             RootedTree rooted = new RootedTree(randomTree, 0);
-//		rooted.printStats();
+            rooted.printStats();
             diameterSum = diameterSum + rooted.getDiameter();
             eccentricitySum = eccentricitySum + rooted.getAverageEccentricity();
             wienerSum = wienerSum + rooted.getWienerIndex();
@@ -227,5 +234,4 @@ public class Main {
         }
 
     }
-
 }
