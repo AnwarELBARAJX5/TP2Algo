@@ -1,6 +1,8 @@
 TP3
 EL BARAJ Anwar _ TP Groupe 2 
+
 N° étudiant:e23022918
+
 Pour ce projet,j'ai réussi à implémenter 4 algorithmes et j'ai modifié l'algorithme bfs pour mélanger les arrètes pour rendre le bfs aléatoire.
 
 Algorithmes implémentés:
@@ -51,6 +53,7 @@ Le cas particulier du Random BFS:Après mélange des voisins,l'algorithme produi
 
 
 Coté performance:
+
 -EdgeInsertion ,Kruskal et Wilson sont très rapides 
 
 -AldousBorder est le plus lent (51ms), ce qui est logique ,la marche aléatoire met beaucoup de temps pour atteindre les tout derniers sommets non visités.  
