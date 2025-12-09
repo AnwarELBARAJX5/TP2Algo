@@ -20,22 +20,8 @@ public class Main {
     static Grid grid = null;
 
 
-    /*public static void main(String argv[]) throws InterruptedException {
 
-        Graph graph = chooseFromGraphFamily();
-        ArrayList<Edge> randomTree = null;
-
-        int noOfSamples = 10;
-        Stats stats = new Stats(noOfSamples);
-        for (int i = 0; i < noOfSamples; i++) {
-            randomTree = genTree(graph);
-            stats.update(randomTree);
-        }
-        stats.print();
-
-        if (grid != null) showGrid(grid, randomTree);
-    }*/
-    public static void main(String argv[]) throws InterruptedException {
+    public static void main(String[] argv) throws InterruptedException {
         Scanner scanner=new Scanner(System.in);
         System.out.println("Choisissez le type de graphe (grid, complete, erdos, lollipop) :");
         String graphType = scanner.nextLine().trim().toLowerCase();
@@ -43,8 +29,8 @@ public class Main {
             System.out.println("Aucun choix, utilisation de 'grid' par défaut.");
             graphType = "grid";
         }
-        System.out.println("Choisissez l'algorithme (kruskal, wilson, aldous, edgeInsertion, randomBFS) :");
-        String algoType = scanner.nextLine().trim();
+        System.out.println("Choisissez l'algorithme (kruskal, wilson, aldous, edgeInsertion, BFS) :");
+        String algoType = scanner.nextLine().trim().toLowerCase();
         if (algoType.isEmpty()) {
             System.out.println("Aucun choix, utilisation de 'kruskal' par défaut.");
             algoType = "kruskal";
@@ -70,21 +56,9 @@ public class Main {
         }
         scanner.close();
     }
-/*
-    private static Graph chooseFromGraphFamily() {
-        // Parametriser ici cette fonction afin de pouvoir choisir
-        // quelle classe de graphe utiliser
 
-        grid = new Grid(1920 / 11, 1080 / 11);
-        Graph graph = grid.graph;
-        //Graph graph = new Complete(400).graph;
-        //Graph graph = new ErdosRenyi(1_000, 100).graph;
-        //Graph graph = new Lollipop(1_000).graph;
-        return graph;
-    }*/
     private static Graph chooseFromGraphFamily(String type) {
-        Graph graph = null;
-
+        Graph graph;
         switch (type) {
             case "grid":
                 grid = new Grid(1920 / 11, 1080 / 11);
@@ -92,7 +66,6 @@ public class Main {
                 break;
 
             case "complete":
-
                 graph = new Complete(400).graph;
                 break;
 
@@ -128,7 +101,7 @@ public class Main {
                 randomTree = RandomAldousBroder.generateTree(graph);
                 break;
 
-            case "edgeInsertion":
+            case "edgeinsertion":
                 randomTree = RandomEdgeInsertion.generateTree(graph);
                 break;
 
@@ -155,9 +128,9 @@ public class Main {
         private int diameterSum = 0;
         private double eccentricitySum = 0;
         private long wienerSum = 0;
-        private int degreesSum[] = {0, 0, 0, 0, 0};
-        private int degrees[];
-        long startingTime = 0;
+        private final int[] degreesSum = {0, 0, 0, 0, 0};
+        private int[] degrees;
+        long startingTime ;
 
         public Stats(int noOfSamples) {
             this.nbrOfSamples = noOfSamples;
@@ -179,7 +152,7 @@ public class Main {
             System.out.println("Average number of degree 2 vertices: "
                     + (degreesSum[2] / nbrOfSamples));
             System.out.println("Average computation time: "
-                    + delay / (nbrOfSamples * 1_000_000) + "ms");
+                    + delay / (nbrOfSamples * 1000000) + "ms");
 
         }
 
