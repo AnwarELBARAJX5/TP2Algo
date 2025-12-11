@@ -1,56 +1,47 @@
-# Le nom de votre classe principale
-# Renommez si nécessaire
-MAINCLASS=Main
-## Le chemin vers où votre classe compilée est installée
-# Renommez si nécessaire
-INSTALLDIR=out/production/TP3
-JARFILE=TP3RandomTrees
+# Nom de la classe principale (sans extension)
+MAIN_CLASS = Main
 
-all: compile install exec
+JAR_FILE = TP3RandomTrees.jar
+# Dossiers
+SRC_DIR = src
+OUT_DIR = out
+RES_DIR = resources
 
-# Cible pour compiler
-compile:
-	cd src ; make compile
+USER_NAME = $(shell whoami)
+ARCHIVE_NAME = $(USER_NAME)_renduTP2.zip
+
+JFLAGS = -d $(OUT_DIR) -cp $(SRC_DIR)
+
+SOURCES = $(shell find $(SRC_DIR) -name "*.java")
+
+# Cible par défaut
+all: compile jar
+
+init:
+	mkdir -p $(OUT_DIR)
+
+compile: init
+	javac $(JFLAGS) $(SOURCES)
+
 
 jar: compile
-	cd $(INSTALLDIR); \
-	echo Main-Class: $(subst /,.,$(MAINCLASS)) > manifest.txt ; \
-	jar cvfm $(JARFILE).jar manifest.txt ./
-	mv $(INSTALLDIR)/$(JARFILE).jar ./
+	jar cfe $(JAR_FILE) $(MAIN_CLASS) -C $(OUT_DIR) .
 
-install:
-	cd src ; make install
+
+exec: compile
+	java -cp $(OUT_DIR) $(MAIN_CLASS)
+
+demo: exec
 
 clean:
-	cd src ; make clean ; make cleanInstall
-	rm *.zip *.jar manifest.*
+	rm -rf $(OUT_DIR)
+	rm -f $(JAR_FILE)
+	rm -f *.zip
 
-# Cible qui explique comment executer
-exec: $(JARFILE).jar
-	java -jar $(JARFILE).jar
+zip: clean
+	zip -r $(ARCHIVE_NAME) $(SRC_DIR) $(RES_DIR) Makefile README.md *.csv
 
-# Ou autrement
-#exec:
-#	java -classpath $(INSTALLDIR) $(MAINCLASS)
-
-# Demarre automatiquement une demonstration de votre programme
-# Il faut que cette demo soit convaincante
-demo:
-	java -classpath $(INSTALLDIR) $(MAINCLASS)
-
-# Executer automatiquent les test
-# On s'attend (d'habitude) que pour claque classe MaClasse il y ait une
-# classe TestMaClasse qui vorifie le bon comportment de chaque methode de la classe
-# sur au moins une entrée
-# A vous de completer
 test:
-	
+	@echo "Pas de tests unitaires définis."
 
-# Cible pour créer son rendu de tp 
-zip:
-	moi=$$(whoami) ; zip -r $${moi}_renduTP2.zip *
-
-
-# Cible pour vérifier le contenu de son rendu de tp 
-zipVerify:
-	moi=$$(whoami) ; unzip -l $${moi}_renduTP2.zip
+.PHONY: all init compile jar exec demo clean zip test

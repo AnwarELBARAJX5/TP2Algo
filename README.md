@@ -23,12 +23,13 @@ Si vous lancez le main vous aurez un programme interactif. il vous demandera dan
 1.De choisir la famille de graphe (grid, complete ,erdos ,lollipop).
 
 2.De choisir l'algorithme à tester (kruskal ,wilson ,aldous ,edgeInsertion ,bfs ).
-
+Si vous utilisez make ,vous pouvez compiler et lancer le projet avec  la commande suivante :
+Dans le bash et dans le dossier parent vous tapez la commande :make exec 
 
 Le programme calculera alors les statistiques moyennes sur 10 échantillons et affichera le labyrinthe généré (uniquement pour les grilles).
 
-J'ai fais une analyse et j'ai lancé les 5 algorithmes avec le meme type de graphe.(Voir fichier excel)
-tp3-master\analysedesalgos.xlsx
+J'ai fais une analyse et j'ai lancé les 5 algorithmes avec tous les types de graphes .(Voir fichier excel)
+tp3-master\analyse.xlsx
 
 Interprétation 
 Les algorithmes de Kruskal,Wilson ,Aldous-Border et EdgeInsertion produisent des résultats similaires.

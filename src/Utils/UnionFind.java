@@ -1,4 +1,4 @@
-package RandomTreeAlgos;
+package Utils;
 
 
 public class UnionFind {

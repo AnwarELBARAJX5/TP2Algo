@@ -74,7 +74,7 @@ public class Main {
                 break;
 
             case "lollipop":
-                graph = new Lollipop(1000).graph;
+                graph = new Lollipop(500).graph;
                 break;
 
             default:
