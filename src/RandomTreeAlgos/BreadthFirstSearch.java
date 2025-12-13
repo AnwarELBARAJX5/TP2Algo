@@ -14,9 +14,13 @@ public class BreadthFirstSearch {
 	BitSet reached;
 
 	private void push(int vertex) {
-		List<Arc> neighbors = Arrays.asList(graph.outEdges(vertex));
-		Collections.shuffle(neighbors);
-		for (Arc arc : neighbors) frontier.offer(arc);
+		randomFrontier();
+		for (Arc arc : graph.outEdges(vertex)) frontier.offer(arc);
+	}
+	private void randomFrontier(){
+		List<Arc> tempList=new ArrayList<>(frontier);
+		Collections.shuffle(tempList);
+		frontier=new LinkedList<>(tempList);
 	}
 	
 	private void explore(Arc nextArc) {
